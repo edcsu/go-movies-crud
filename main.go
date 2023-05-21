@@ -27,6 +27,18 @@ func getMovies(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(movies)
 }
 
+func getMovie(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+
+	for _, movie := range movies {
+		if movie.ID == params["id"] {
+			json.NewEncoder(w).Encode(movie)
+			return
+		}
+	}
+}
+
 func deleteMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
@@ -47,6 +59,7 @@ func main() {
 	movies = append(movies, Movie{ID: "2", Isbn: "12909", Title: "Dynasty In Namibia", Director: &Director{firstname: "Jane", lastname: "Doe"}})
 
 	r.HandleFunc("/movies", getMovies).Methods("GET")
+	r.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 	r.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
 	fmt.Printf("Starting at port 8000\n")
