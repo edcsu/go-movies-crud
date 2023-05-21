@@ -18,8 +18,8 @@ type Movie struct {
 }
 
 type Director struct {
-	firstname string `json:"firstname"`
-	lastname  string `json:"lastname"`
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
 }
 
 var movies []Movie
@@ -87,8 +87,8 @@ func deleteMovie(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := mux.NewRouter()
 
-	movies = append(movies, Movie{ID: "1", Isbn: "12908", Title: "Covert Ops", Director: &Director{firstname: "John", lastname: "Doe"}})
-	movies = append(movies, Movie{ID: "2", Isbn: "12909", Title: "Dynasty In Namibia", Director: &Director{firstname: "Jane", lastname: "Doe"}})
+	movies = append(movies, Movie{ID: "1", Isbn: "12908", Title: "Covert Ops", Director: &Director{Firstname: "John", Lastname: "Doe"}})
+	movies = append(movies, Movie{ID: "2", Isbn: "12909", Title: "Dynasty In Namibia", Director: &Director{Firstname: "Jane", Lastname: "Doe"}})
 
 	r.HandleFunc("/movies", getMovies).Methods("GET")
 	r.HandleFunc("/movies/{id}", getMovie).Methods("GET")
