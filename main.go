@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"log"
@@ -21,12 +22,19 @@ type Director struct {
 
 var movies []Movie
 
+func getMovies(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(movies)
+}
+
 func main() {
 	r := mux.NewRouter()
 
 	movies = append(movies, Movie{ID: "1", Isbn: "12908", Title: "Covert Ops", Director: &Director{firstname: "John", lastname: "Doe"}})
-	movies = append(movies, Movie{ID: "2", Isbn: "12909", Title: "Dynasty In Namibia", Director: &Director{firstname: "Jane", lastname: "Patricia"}})
-	
+	movies = append(movies, Movie{ID: "2", Isbn: "12909", Title: "Dynasty In Namibia", Director: &Director{firstname: "Jane", lastname: "Doe"}})
+
+	r.HandleFunc("/movies", getMovies).Methods("GET")
+
 	fmt.Printf("Starting at port 8000\n")
 	log.Fatal(http.ListenAndServe(":8000", r))
 }
